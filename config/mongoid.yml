@@ -32,10 +32,10 @@ development:
         #     - use: web
 
         # The name of the user for authentication.
-        # user: 'user'
+        user: Rails.application.credentials[:mongodb][:development][:user]
 
         # The password of the user for authentication.
-        # password: 'password'
+        password: Rails.application.credentials[:mongodb][:development][:password]
 
         # The user's database roles.
         # roles:
@@ -177,3 +177,18 @@ test:
         read:
           mode: :primary
         max_pool_size: 1
+        user: Rails.application.credentials[:mongodb][:test][:user]
+        password: Rails.application.credentials[:mongodb][:test][:password]
+
+production:
+  clients:
+    default:
+      database: bs_playlist_sort_production
+      hosts:
+        - localhost:27017
+      options:
+        read:
+          mode: :primary
+        max_pool_size: 1
+        user: Rails.application.credentials[:mongodb][:production][:user]
+        password: Rails.application.credentials[:mongodb][:production][:password]
