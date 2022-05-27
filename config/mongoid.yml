@@ -32,10 +32,10 @@ development:
         #     - use: web
 
         # The name of the user for authentication.
-        user: Rails.application.credentials[:mongodb][:development][:user]
+        user: <%= Rails.application.credentials.mongodb[:development][:user] %>
 
         # The password of the user for authentication.
-        password: Rails.application.credentials[:mongodb][:development][:password]
+        password: <%= Rails.application.credentials.mongodb[:development][:password] %>
 
         # The user's database roles.
         # roles:
@@ -151,7 +151,7 @@ development:
 
     # Raise an error when performing a #find and the document is not found.
     # (default: true)
-    # raise_not_found_error: true
+    raise_not_found_error: true
 
     # Raise an error when defining a scope with the same name as an
     # existing method. (default: false)
@@ -177,8 +177,10 @@ test:
         read:
           mode: :primary
         max_pool_size: 1
-        user: Rails.application.credentials[:mongodb][:test][:user]
-        password: Rails.application.credentials[:mongodb][:test][:password]
+        user: <%= Rails.application.credentials.mongodb[:test][:user] %>
+        password: <%= Rails.application.credentials.mongodb[:test][:password] %>
+  options:
+    raise_not_found_error: true
 
 production:
   clients:
@@ -190,5 +192,7 @@ production:
         read:
           mode: :primary
         max_pool_size: 1
-        user: Rails.application.credentials[:mongodb][:production][:user]
-        password: Rails.application.credentials[:mongodb][:production][:password]
+        user: <%= Rails.application.credentials.mongodb[:production][:user] %>
+        password: <%= Rails.application.credentials.mongodb[:production][:password] %>
+  options:
+    raise_not_found_error: true
