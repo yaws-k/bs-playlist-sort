@@ -1,3 +1,33 @@
-%h1 Playlist Sorter
-%p A quick brown fox jumps over the lazy dog. A quick brown fox jumps over the lazy dog. A quick brown fox jumps over the lazy dog. A quick brown fox jumps over the lazy dog. A quick brown fox jumps over the lazy dog. A quick brown fox jumps over the lazy dog.
-%button.btn Button
+%h1 Beat Saber custom playlist sorter
+%p
+  You can sort playlists ingame with
+  = link_to 'BetterSongList MOD,', 'https://github.com/kinsi55/BeatSaber_BetterSongList'
+  but you have to sort it everytime you open that playlist.
+  %br
+  This site will sort songs in your playlist, and you can download that sorted playlist.
+
+%p
+  = link_to 'Upload playlist to start', new_playlist_path
+
+%h2 How to use
+
+%ol
+  %li Upload a playlist
+  %li Sort songs according to song names (Ascending/Descending)
+  %li Download sorted playlist
+  %li Put it into the playlist folder (Please backup your old playlist before overwriting!)
+
+%h2 Notice
+
+%ul
+  %li This site can do simple sort. That's all.
+  %li
+    PC playlist only. Use
+    = link_to 'Playlist Editor Ultimate', 'https://playlisteditorultimate.com/'
+    for Quest.
+  %li There may be playlists with incompatible formats.
+  %li Uploaded playlists will be deleted after a while. You can't re-download or save your playlists on this site.
+
+%p
+  = link_to 'Beat Saber playlist sorter on GitHub', 'https://github.com/yaws-k/bs-playlist-sort'
+  This site is my Rails 7 practice. There may be MDOs or tools that can do same, or even better.
