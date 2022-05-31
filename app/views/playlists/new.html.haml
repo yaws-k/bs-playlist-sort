@@ -1,0 +1,9 @@
+%h1 Upload a playlist
+
+%p Please choose a playlist. Normally playlists are located in "C:\Program Files (x86)\Steam\steamapps\common\Beat Saber\Playlists"
+
+= form_with url: '/playlists' do |f|
+  %p
+    = f.file_field :upload_file
+  %p
+    = f.submit('Upload', class: 'btn btn-primary')

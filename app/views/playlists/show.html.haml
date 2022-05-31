@@ -1,0 +1,24 @@
+%h1 Uploaded Playlist
+
+%h2 Details
+
+.flex.gap-4
+  .flex-none
+    = image_tag("data:image/png;#{@rec.image}", size: '128x128')
+  .flex-initial
+    %p
+      %span.badge Title
+      %br
+      #{@rec.playlist_title}
+    
+    %p
+      %span.badge Author
+      %br
+      #{@rec.playlist_author}
+
+%p
+  %span.badge Description
+  %br
+  #{simple_format(@rec.playlist_description)}
+
+%h2 Songs
