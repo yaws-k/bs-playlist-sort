@@ -2,6 +2,8 @@ class Playlist
   include Mongoid::Document
   include Mongoid::Timestamps
 
+  has_many :songs, dependent: :destroy
+
   # validations
   validates \
     :playlist_title,

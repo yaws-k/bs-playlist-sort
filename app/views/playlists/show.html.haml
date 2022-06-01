@@ -4,8 +4,6 @@
 
 .flex.gap-4
   .flex-none
-    = image_tag("data:image/png;#{@rec.image}", size: '128x128')
-  .flex-initial
     %p
       %span.badge Title
       %br
@@ -16,9 +14,22 @@
       %br
       #{@rec.playlist_author}
 
+  .flex-initial
+    = image_tag("data:image/png;#{@rec.image}")
+
 %p
   %span.badge Description
   %br
   #{simple_format(@rec.playlist_description)}
 
-%h2 Songs
+%h2 #{@songs.size} Songs
+
+= link_to 'Reset', playlist_path(@rec), class: 'btn'
+= link_to 'A -> Z', playlist_path(@rec, sort: 'asc'), class: 'btn'
+= link_to 'Z -> A', playlist_path(@rec, sort: 'desc'), class: 'btn'
+&emsp;
+= link_to 'Download current list', playlist_path(@rec, sort: params[:sort], download: 1), class: 'btn btn-primary'
+
+%ol
+  - @songs.each do |s|
+    %li #{s.song_name}

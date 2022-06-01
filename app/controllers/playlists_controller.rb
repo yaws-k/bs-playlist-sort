@@ -12,6 +12,29 @@ class PlaylistsController < ApplicationController
 
     @rec = Playlist.find(params[:id])
     redirect_to playlists_path if @rec.blank?
+
+    @songs =
+      case params[:sort]
+      when 'asc'
+        @rec.songs.order(song_name: :asc)
+      when 'desc'
+        @rec.songs.order(song_name: :desc)
+      else
+        @rec.songs
+      end
+    
+    if params[:download].present?
+      playlist = {
+        playlistTitle: @rec.playlist_title,
+        playlistAuthor: @rec.playlist_author,
+        playlistDescription: @rec.playlist_description,
+        songs: @songs.map{|i| i.original},
+        image: @rec.image
+      }
+      playlist.merge(@rec.others) if @rec.others.present?
+
+      send_data(JSON.pretty_generate(playlist), filename: @rec.filename)
+    end
   end
 
   def new
@@ -21,11 +44,17 @@ class PlaylistsController < ApplicationController
   def create
     # !!Implement safety checks
     json = JSON.parse(params[:upload_file].read)
+    songs = json['songs']
 
     rec = build_playlist(json: json)
     rec.filename = params[:upload_file].original_filename
     if rec.save!
       session[:playlist_id] = rec.id.to_s
+
+      songs.each do |song|
+        rec.songs.create(song_name: song['songName'], original: song)
+      end
+  
       redirect_to playlist_path(rec)
     else
       render 'new'
