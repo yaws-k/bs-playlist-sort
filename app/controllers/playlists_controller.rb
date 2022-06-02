@@ -18,7 +18,7 @@ class PlaylistsController < ApplicationController
       when 'desc'
         @rec.songs.order(song_name: :desc)
       else
-        @rec.songs
+        @rec.songs.order(original_order: :asc)
       end
 
     send_data(generate_json, filename: @rec.filename) if params[:download].present?
@@ -30,13 +30,9 @@ class PlaylistsController < ApplicationController
 
   def create
     rec, songs = build_playlist
-    if rec.save!
+    if rec.save
       session[:playlist_id] = rec.id.to_s
-
-      songs.each do |song|
-        rec.songs.create(song_name: song['songName'], original: song)
-      end
-
+      save_songs(playlist: rec, songs: songs)
       redirect_to playlist_path(rec)
     else
       render 'new'
@@ -81,6 +77,16 @@ class PlaylistsController < ApplicationController
     }
     playlist.merge(@rec.others) if @rec.others.present?
     JSON.pretty_generate(playlist)
+  end
+
+  def save_songs(playlist: nil, songs: nil)
+    songs.each_with_index do |song, i|
+      playlist.songs.create(
+        song_name: song['songName'],
+        original: song,
+        original_order: i
+      )
+    end
   end
 
   def session_invalid?

@@ -7,6 +7,8 @@ class Song
   # validations
   validates \
     :song_name,
+    :original,
+    :original_order,
     presence: true
 
   # fields
@@ -15,4 +17,6 @@ class Song
 
   # Original data
   field :original, type: Hash
+  field :original_order, type: Integer
+  index({ original_order: 1 }, { sparse: false })
 end
