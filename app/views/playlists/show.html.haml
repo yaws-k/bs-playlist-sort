@@ -3,7 +3,7 @@
 %h2 Details
 
 .flex.gap-4
-  .flex-none
+  .flex-1
     %p
       %span.badge Title
       %br
@@ -14,13 +14,13 @@
       %br
       #{@rec.playlist_author}
 
+    %p
+      %span.badge Description
+      %br
+      #{simple_format(@rec.playlist_description)}
+
   .flex-initial
     = image_tag("data:image/png;#{@rec.image}")
-
-%p
-  %span.badge Description
-  %br
-  #{simple_format(@rec.playlist_description)}
 
 %h2 #{@songs.size} Songs
 

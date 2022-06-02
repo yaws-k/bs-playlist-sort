@@ -29,6 +29,11 @@ class PlaylistsController < ApplicationController
   end
 
   def create
+    if params[:upload_file].blank?
+      redirect_to new_playlist_path
+      return
+    end
+
     rec, songs = build_playlist
     if rec.save
       session[:playlist_id] = rec.id.to_s
