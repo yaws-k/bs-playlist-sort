@@ -1,0 +1,35 @@
+%h1 Uploaded Playlist
+
+%h2 Details
+
+.flex.gap-4
+  .flex-1
+    %p
+      %span.badge Title
+      %br
+      #{@rec.playlist_title}
+
+    %p
+      %span.badge Author
+      %br
+      #{@rec.playlist_author}
+
+    %p
+      %span.badge Description
+      %br
+      #{simple_format(@rec.playlist_description)}
+
+  .flex-initial
+    = image_tag("data:image/png;#{@rec.image}")
+
+%h2 #{@songs.size} Songs
+
+= link_to 'Reset', playlist_path(@rec), class: 'btn'
+= link_to 'A -> Z', playlist_path(@rec, sort: 'asc'), class: 'btn'
+= link_to 'Z -> A', playlist_path(@rec, sort: 'desc'), class: 'btn'
+&emsp;
+= link_to 'Download current list', playlist_path(@rec, sort: params[:sort], download: 1), class: 'btn btn-primary'
+
+%ol
+  - @songs.each do |s|
+    %li #{s.song_name}
