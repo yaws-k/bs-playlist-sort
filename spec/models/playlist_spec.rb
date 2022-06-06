@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe Playlist, type: :model do
-  describe 'field checks' do
+  describe 'field' do
     let(:rec) { build(:playlist) }
 
     it 'is valid with required fields' do
@@ -21,6 +21,36 @@ RSpec.describe Playlist, type: :model do
 
     it 'is valid with full fields' do
       expect(build(:playlist, :full_fields)).to be_valid
+    end
+  end
+
+  describe 'method' do
+    describe 'import_json' do
+      let(:json) { fixture_file_upload('valid_playlist.json') }
+
+      it 'builds playlist record' do
+        rec, _songs = Playlist.import_json(json:)
+
+        data = JSON.parse(file_fixture('valid_playlist.json').read)
+        expect(rec).to be_valid
+        expect(rec.playlist_title).to eq(data['playlistTitle'])
+        expect(rec.playlist_author).to eq(data['playlistAuthor'])
+        expect(rec.playlist_description).to eq(data['playlistDescription'])
+        expect(rec.image).to eq(data['image'])
+        expect(rec.others).to eq({ 'syncURL' => data['syncURL'] })
+        expect(rec.filename).to eq(json.original_filename)
+      end
+    end
+
+    describe 'export_json' do
+      it 'generates json' do
+        rec, songs = Playlist.import_json(json: fixture_file_upload('valid_playlist.json'))
+        rec.save
+        Song.import_songs(songs:, playlist_id: rec.id)
+
+        songs = rec.songs.order(original_order: :desc)
+        expect(rec.export_json(songs:)).to eq(file_fixture('song_desc.json').read)
+      end
     end
   end
 end
