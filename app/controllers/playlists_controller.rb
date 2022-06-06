@@ -21,7 +21,7 @@ class PlaylistsController < ApplicationController
         @rec.songs.order(original_order: :asc)
       end
 
-    send_data(generate_json, filename: @rec.filename) if params[:download].present?
+    send_data(@rec.export_json(songs: @songs), filename: @rec.filename) if params[:download].present?
   end
 
   def new
@@ -34,10 +34,10 @@ class PlaylistsController < ApplicationController
       return
     end
 
-    rec, songs = build_playlist
+    rec, songs = Playlist.import_json(json: params[:upload_file])
     if rec.save
+      Song.import_songs(songs:, playlist_id: rec.id)
       session[:playlist_id] = rec.id.to_s
-      save_songs(playlist: rec, songs: songs)
       redirect_to playlist_path(rec)
     else
       render 'new'
@@ -45,54 +45,6 @@ class PlaylistsController < ApplicationController
   end
 
   private
-
-  def build_playlist
-    json = JSON.parse(params[:upload_file].read)
-    rec = Playlist.new
-
-    field_list.each do |field, json_field|
-      rec[field] = json.delete(json_field)
-    end
-
-    songs = json.delete('songs')
-
-    rec.others = json
-    rec.filename = params[:upload_file].original_filename
-
-    [rec, songs]
-  end
-
-  def field_list
-    # Playlist Model field name: json filed name
-    {
-      playlist_title: 'playlistTitle',
-      playlist_author: 'playlistAuthor',
-      playlist_description: 'playlistDescription',
-      image: 'image'
-    }
-  end
-
-  def generate_json
-    playlist = {
-      playlistTitle: @rec.playlist_title,
-      playlistAuthor: @rec.playlist_author,
-      playlistDescription: @rec.playlist_description,
-      songs: @songs.pluck(:original),
-      image: @rec.image
-    }
-    playlist.merge(@rec.others) if @rec.others.present?
-    JSON.pretty_generate(playlist)
-  end
-
-  def save_songs(playlist: nil, songs: nil)
-    songs.each_with_index do |song, i|
-      playlist.songs.create(
-        song_name: song['songName'],
-        original: song,
-        original_order: i
-      )
-    end
-  end
 
   def session_invalid?
     if session.blank? || session[:playlist_id].blank? || (session[:playlist_id] != params[:id])

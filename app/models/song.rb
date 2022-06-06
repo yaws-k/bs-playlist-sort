@@ -19,4 +19,22 @@ class Song
   field :original, type: Hash
   field :original_order, type: Integer
   index({ original_order: 1 }, { sparse: false })
+
+  # Class methods
+  class << self
+    def import_songs(songs: [], playlist_id: nil)
+      return false if songs.blank? || playlist_id.blank?
+
+      songs.each_with_index do |song, i|
+        Song.create(
+          playlist_id:,
+          song_name: song['songName'],
+          original: song,
+          original_order: i
+        )
+      end
+
+      true
+    end
+  end
 end
