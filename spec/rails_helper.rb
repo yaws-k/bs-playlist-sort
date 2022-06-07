@@ -53,6 +53,18 @@ RSpec.configure do |config|
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
 
+  # Delete records before & after tests
+  config.before(:suite) do
+    DatabaseCleaner[:mongoid].strategy = :deletion
+    DatabaseCleaner[:mongoid].clean_with(:deletion)
+  end
+
+  config.around(:each) do |example|
+    DatabaseCleaner[:mongoid].cleaning do
+      example.run
+    end
+  end
+
   # Enable FactoryBot syntax
   config.include FactoryBot::Syntax::Methods
 
