@@ -18,7 +18,7 @@ class PlaylistsController < ApplicationController
       when 'desc'
         @rec.songs.order(song_name: :desc)
       else
-        @rec.songs.order(original_order: :asc)
+        @rec.songs.order(original_pos: :asc)
       end
 
     send_data(@rec.export_json(songs: @songs), filename: @rec.filename) if params[:download].present?
@@ -34,11 +34,10 @@ class PlaylistsController < ApplicationController
       return
     end
 
-    rec, songs = Playlist.import_json(json: params[:upload_file])
-    if rec.save
-      Song.import_songs(songs:, playlist_id: rec.id)
-      session[:playlist_id] = rec.id.to_s
-      redirect_to playlist_path(rec)
+    rec_id = Playlist.import_json(json: params[:upload_file])
+    if rec_id
+      session[:playlist_id] = rec_id.to_s
+      redirect_to playlist_path(rec_id)
     else
       render 'new'
     end
