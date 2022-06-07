@@ -1,7 +1,6 @@
 class PlaylistsController < ApplicationController
   def index
-    # Clear existing records during development
-    Playlist.destroy_all
+    # Nothing to do
   end
 
   def show
