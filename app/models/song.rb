@@ -8,7 +8,7 @@ class Song
   validates \
     :song_name,
     :original,
-    :original_order,
+    :original_pos,
     presence: true
 
   # fields
@@ -17,8 +17,8 @@ class Song
 
   # Original data
   field :original, type: Hash
-  field :original_order, type: Integer
-  index({ original_order: 1 }, { sparse: false })
+  field :original_pos, type: Integer
+  index({ original_pos: 1 }, { sparse: false })
 
   # Class methods
   class << self
@@ -30,7 +30,7 @@ class Song
           playlist_id:,
           song_name: song['songName'],
           original: song,
-          original_order: i
+          original_pos: i + 1
         )
       end
 

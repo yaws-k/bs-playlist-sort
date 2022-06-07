@@ -28,9 +28,10 @@ RSpec.describe Playlist, type: :model do
     describe 'import_json' do
       let(:json) { fixture_file_upload('valid_playlist.json') }
 
-      it 'builds playlist record' do
-        rec, _songs = Playlist.import_json(json:)
+      it 'saves playlist record' do
+        rec_id = Playlist.import_json(json:)
 
+        rec = Playlist.find(rec_id)
         data = JSON.parse(file_fixture('valid_playlist.json').read)
         expect(rec).to be_valid
         expect(rec.playlist_title).to eq(data['playlistTitle'])
@@ -44,11 +45,9 @@ RSpec.describe Playlist, type: :model do
 
     describe 'export_json' do
       it 'generates json' do
-        rec, songs = Playlist.import_json(json: fixture_file_upload('valid_playlist.json'))
-        rec.save
-        Song.import_songs(songs:, playlist_id: rec.id)
-
-        songs = rec.songs.order(original_order: :desc)
+        rec_id = Playlist.import_json(json: fixture_file_upload('valid_playlist.json'))
+        rec = Playlist.find(rec_id)
+        songs = rec.songs.order(original_pos: :desc)
         expect(rec.export_json(songs:)).to eq(file_fixture('song_desc.json').read)
       end
     end

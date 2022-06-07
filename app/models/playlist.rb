@@ -36,10 +36,10 @@ class Playlist
       rec.filename = filename
 
       # Save playlist record and its songs
-      #return false unless rec.save
-      #return false unless Song.new.import_songs(songs:, playlist_id: rec.id)
+      return false unless rec.save
+      return false unless Song.import_songs(songs:, playlist_id: rec.id)
 
-      [rec, songs]
+      rec.id
     end
 
     private
