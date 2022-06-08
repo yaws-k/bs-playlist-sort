@@ -52,12 +52,14 @@ RSpec.describe Song, type: :model do
         expect(rec.song_name).to eq(data['songName'])
         expect(rec.original).to eq(data)
         expect(rec.original_pos).to eq(1)
+        expect(rec.pos).to eq(1)
 
         rec = playlist.songs.order(original_pos: :asc).last
         data = songs[1]
         expect(rec.song_name).to eq(data['songName'])
         expect(rec.original).to eq(data)
         expect(rec.original_pos).to eq(2)
+        expect(rec.pos).to eq(2)
       end
     end
   end

@@ -34,7 +34,8 @@ class Song
           playlist_id:,
           song_name: song['songName'],
           original: song,
-          original_pos: i + 1
+          original_pos: i + 1,
+          pos: i + 1
         )
       end
 

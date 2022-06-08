@@ -10,5 +10,6 @@ FactoryBot.define do
       }
     end
     sequence(:original_pos, 1)
+    sequence(:pos, 1)
   end
 end
