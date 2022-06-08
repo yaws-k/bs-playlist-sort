@@ -12,15 +12,26 @@ RSpec.describe Song, type: :model do
       rec.song_name = ''
       rec.original = {}
       rec.original_pos = nil
+      rec.pos = nil
 
       expect(rec).to_not be_valid
       expect(rec.errors[:song_name]).to include("can't be blank")
       expect(rec.errors[:original]).to include("can't be blank")
       expect(rec.errors[:original_pos]).to include("can't be blank")
+      expect(rec.errors[:pos]).to include("can't be blank")
     end
 
     it 'is valid with full fields' do
       # All fields are required
+    end
+
+    it 'has default values' do
+      rec = Song.new
+
+      expect(rec.song_name).to eq('')
+      expect(rec.original).to eq({})
+      expect(rec.original_pos).to eq(0)
+      expect(rec.pos).to eq(0)
     end
   end
 

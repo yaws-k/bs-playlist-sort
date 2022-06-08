@@ -9,16 +9,20 @@ class Song
     :song_name,
     :original,
     :original_pos,
+    :pos,
     presence: true
 
   # fields
-  field :song_name, type: String
+  field :song_name, type: String, default: ''
   index({ song_name: 1 }, { sparse: false })
 
   # Original data
-  field :original, type: Hash
-  field :original_pos, type: Integer
+  field :original, type: Hash, default: {}
+  field :original_pos, type: Integer, default: 0
   index({ original_pos: 1 }, { sparse: false })
+
+  # Sorted position
+  field :pos, type: Integer, default: 0
 
   # Class methods
   class << self
