@@ -39,7 +39,29 @@ RSpec.describe 'Playlists', type: :request do
       post '/playlists', params: {
         upload_file: fixture_file_upload('valid_playlist.json')
       }
-      expect(response).to redirect_to playlist_path(Playlist.order(created_at: :desc).first)
+      expect(response).to redirect_to edit_playlist_path(Playlist.order(created_at: :desc).first)
+    end
+  end
+
+  describe '#edit' do
+    let(:playlist) { create(:playlist) }
+
+    context 'without valid session' do
+      it 'returns http redirect' do
+        get "/playlists/#{playlist.id}/edit"
+        expect(response).to redirect_to playlists_path
+      end
+    end
+  end
+
+  describe '#update' do
+    let(:song) { create(:song) }
+    it 'returns http redirect' do
+      playlist = song.playlist
+      patch "/playlists/#{playlist.id}", params: {
+        type: 'desc'
+      }
+      expect(response).to redirect_to edit_playlist_path(playlist)
     end
   end
 end

@@ -51,5 +51,18 @@ RSpec.describe Playlist, type: :model do
         expect(rec.export_json(songs:)).to eq(file_fixture('song_desc.json').read)
       end
     end
+
+    describe 'reorder_songs' do
+      it 'updates song pos' do
+        rec_id = Playlist.import_json(json: fixture_file_upload('valid_playlist.json'))
+        rec = Playlist.find(rec_id)
+        rec.reorder_songs(type: 'desc')
+
+        song = rec.songs.order(original_pos: :asc).first
+        expect(song.pos).to eq(2)
+        song = rec.songs.order(original_pos: :asc).last
+        expect(song.pos).to eq(1)
+      end
+    end
   end
 end

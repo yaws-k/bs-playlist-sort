@@ -67,4 +67,18 @@ class Playlist
     playlist.merge!(others) if others.present?
     JSON.pretty_generate(playlist)
   end
+
+  def reorder_songs(type: nil)
+    songs =
+      case type
+      when 'reset'
+        self.songs.order(original_pos: :asc)
+      when 'asc'
+        self.songs.order(song_name: :asc)
+      when 'desc'
+        self.songs.order(song_name: :desc)
+      end
+
+    songs.each_with_index { |song, i| song.update(pos: i + 1) }
+  end
 end

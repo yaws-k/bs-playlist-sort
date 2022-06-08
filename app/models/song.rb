@@ -23,6 +23,7 @@ class Song
 
   # Sorted position
   field :pos, type: Integer, default: 0
+  index({ pos: 1 }, { sparse: false })
 
   # Class methods
   class << self
