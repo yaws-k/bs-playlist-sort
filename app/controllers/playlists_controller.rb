@@ -47,8 +47,8 @@ class PlaylistsController < ApplicationController
       return
     end
 
-    @rec = Playlist.find(params[:id])
-    if @rec.blank?
+    @playlist = Playlist.find(params[:id])
+    if @playlist.blank?
       redirect_to playlists_path
       return
     end

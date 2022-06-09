@@ -1,7 +1,7 @@
 {
   "playlistTitle": "Sample playlist",
-  "playlistAuthor": "Author",
-  "playlistDescription": "Descriotion",
+  "playlistAuthor": "Author Name",
+  "playlistDescription": "Playlist descriotion",
   "syncURL": "https://bsaber.com/PlaylistAPI/dummy.json",
   "songs": [
     {
