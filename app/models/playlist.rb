@@ -25,7 +25,11 @@ class Playlist
   class << self
     def import_json(json: nil)
       filename = json.original_filename
-      data = JSON.parse(json.read)
+      begin
+        data = JSON.parse(json.read)
+      rescue JSON::ParserError
+        return false
+      end
       songs = data.delete('songs')
 
       rec = Playlist.new

@@ -36,7 +36,7 @@ class PlaylistsController < ApplicationController
       session[:playlist_id] = rec_id.to_s
       redirect_to edit_playlist_path(rec_id)
     else
-      render 'new'
+      redirect_to new_playlist_path, alert: 'Playlist parse error. Please check what you have uploaded.'
     end
   end
 
