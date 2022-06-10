@@ -1,27 +1,24 @@
 class PlaylistsController < ApplicationController
   def index
-    # Clear existing records during development
-    Playlist.destroy_all
+    # Nothing to do
   end
 
   def show
     # Only my playlist is available
-    redirect_to playlists_path if session_invalid?
+    if session_invalid?
+      redirect_to playlists_path
+      return
+    end
 
     @rec = Playlist.find(params[:id])
-    redirect_to playlists_path if @rec.blank?
+    if @rec.blank?
+      redirect_to playlists_path
+      return
+    end
 
-    @songs =
-      case params[:sort]
-      when 'asc'
-        @rec.songs.order(song_name: :asc)
-      when 'desc'
-        @rec.songs.order(song_name: :desc)
-      else
-        @rec.songs.order(original_order: :asc)
-      end
+    @songs = @rec.songs.order(pos: :asc)
 
-    send_data(generate_json, filename: @rec.filename) if params[:download].present?
+    send_data(@rec.export_json(songs: @songs), filename: @rec.filename)
   end
 
   def new
@@ -34,65 +31,39 @@ class PlaylistsController < ApplicationController
       return
     end
 
-    rec, songs = build_playlist
-    if rec.save
-      session[:playlist_id] = rec.id.to_s
-      save_songs(playlist: rec, songs: songs)
-      redirect_to playlist_path(rec)
+    rec_id = Playlist.import_json(json: params[:upload_file])
+    if rec_id
+      session[:playlist_id] = rec_id.to_s
+      redirect_to edit_playlist_path(rec_id)
     else
-      render 'new'
+      redirect_to new_playlist_path, alert: 'Playlist parse error. Please check what you have uploaded.'
     end
+  end
+
+  def edit
+    # Only my playlist is available
+    if session_invalid?
+      redirect_to playlists_path
+      return
+    end
+
+    @playlist = Playlist.find(params[:id])
+    if @playlist.blank?
+      redirect_to playlists_path
+      return
+    end
+
+    @songs = @playlist.songs.order(pos: :asc)
+  end
+
+  def update
+    playlist = Playlist.find(params[:id])
+    playlist.reorder_songs(type: params[:type])
+
+    redirect_to edit_playlist_path(playlist)
   end
 
   private
-
-  def build_playlist
-    json = JSON.parse(params[:upload_file].read)
-    rec = Playlist.new
-
-    field_list.each do |field, json_field|
-      rec[field] = json.delete(json_field)
-    end
-
-    songs = json.delete('songs')
-
-    rec.others = json
-    rec.filename = params[:upload_file].original_filename
-
-    [rec, songs]
-  end
-
-  def field_list
-    # Playlist Model field name: json filed name
-    {
-      playlist_title: 'playlistTitle',
-      playlist_author: 'playlistAuthor',
-      playlist_description: 'playlistDescription',
-      image: 'image'
-    }
-  end
-
-  def generate_json
-    playlist = {
-      playlistTitle: @rec.playlist_title,
-      playlistAuthor: @rec.playlist_author,
-      playlistDescription: @rec.playlist_description,
-      songs: @songs.pluck(:original),
-      image: @rec.image
-    }
-    playlist.merge(@rec.others) if @rec.others.present?
-    JSON.pretty_generate(playlist)
-  end
-
-  def save_songs(playlist: nil, songs: nil)
-    songs.each_with_index do |song, i|
-      playlist.songs.create(
-        song_name: song['songName'],
-        original: song,
-        original_order: i
-      )
-    end
-  end
 
   def session_invalid?
     if session.blank? || session[:playlist_id].blank? || (session[:playlist_id] != params[:id])

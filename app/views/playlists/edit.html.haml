@@ -1,0 +1,44 @@
+%h1 Reorder songs
+
+%h2 Details
+
+.flex.gap-4
+  .flex-1
+    %p
+      %span.badge Title
+      %br
+      #{@playlist.playlist_title}
+
+    %p
+      %span.badge Author
+      %br
+      #{@playlist.playlist_author}
+
+    %p
+      %span.badge Description
+      %br
+      #{simple_format(@playlist.playlist_description)}
+
+  .flex-initial
+    = image_tag("data:image/png;#{@playlist.image}")
+
+%h2 #{@songs.size} Songs
+
+.flex.flex-row.gap-4
+  = form_with model: @playlist do |f|
+    = hidden_field_tag 'type', 'reset'
+    = f.submit('Reset', class: 'btn')
+
+  = form_with model: @playlist do |f|
+    = hidden_field_tag 'type', 'asc'
+    = f.submit('A -> Z', class: 'btn')
+
+  = form_with model: @playlist do |f|
+    = hidden_field_tag 'type', 'desc'
+    = f.submit('Z -> A', class: 'btn')
+
+  = link_to 'Download current list', playlist_path(@playlist), class: 'btn btn-primary', target: '_blank'
+
+%ol
+  - @songs.each do |s|
+    %li #{s.song_name}

@@ -48,6 +48,7 @@ gem "bootsnap", require: false
 # Custom gems
 gem 'hamlit-rails'
 gem 'mongoid'
+gem 'sd_notify'
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
@@ -57,6 +58,10 @@ group :development, :test do
   gem 'factory_bot_rails'
   gem 'faker'
   gem 'rspec-rails', '~> 6.0.0.rc'
+end
+
+group :test do
+  gem 'database_cleaner-mongoid'
 end
 
 group :development do

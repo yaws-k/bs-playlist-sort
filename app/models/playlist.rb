@@ -20,4 +20,69 @@ class Playlist
 
   # playlist data
   field :filename, type: String
+
+  # Class methods
+  class << self
+    def import_json(json: nil)
+      filename = json.original_filename
+      begin
+        data = JSON.parse(json.read)
+      rescue JSON::ParserError
+        return false
+      end
+      songs = data.delete('songs')
+
+      rec = Playlist.new
+      field_list.each do |db_field, data_field|
+        rec[db_field] = data.delete(data_field)
+      end
+      rec.others = data
+      rec.filename = filename
+
+      # Save playlist record and its songs
+      return false unless rec.save
+      return false unless Song.import_songs(songs:, playlist_id: rec.id)
+
+      rec.id
+    end
+
+    private
+
+    def field_list
+      # Playlist Model field name: json filed name
+      {
+        playlist_title: 'playlistTitle',
+        playlist_author: 'playlistAuthor',
+        playlist_description: 'playlistDescription',
+        image: 'image'
+      }
+    end
+  end
+
+  # Instance methods
+  def export_json(songs: [])
+    playlist = {
+      playlistTitle: playlist_title,
+      playlistAuthor: playlist_author,
+      playlistDescription: playlist_description,
+      songs: songs.pluck(:original),
+      image:
+    }
+    playlist.merge!(others) if others.present?
+    JSON.pretty_generate(playlist)
+  end
+
+  def reorder_songs(type: nil)
+    songs =
+      case type
+      when 'reset'
+        self.songs.order(original_pos: :asc)
+      when 'asc'
+        self.songs.order(song_name: :asc)
+      when 'desc'
+        self.songs.order(song_name: :desc)
+      end
+
+    songs.each_with_index { |song, i| song.update(pos: i + 1) }
+  end
 end
