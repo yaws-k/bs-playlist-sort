@@ -226,6 +226,7 @@ GEM
     ruby2_keywords (0.0.5)
     ruby_parser (3.19.1)
       sexp_processor (~> 4.16)
+    sd_notify (0.1.1)
     sexp_processor (4.16.1)
     sprockets (4.0.3)
       concurrent-ruby (~> 1.0)
@@ -279,6 +280,7 @@ DEPENDENCIES
   rails (~> 7.0.3)
   redis (~> 4.0)
   rspec-rails (~> 6.0.0.rc)
+  sd_notify
   sprockets-rails
   stimulus-rails
   turbo-rails

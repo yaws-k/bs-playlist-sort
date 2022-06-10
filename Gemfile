@@ -48,6 +48,7 @@ gem "bootsnap", require: false
 # Custom gems
 gem 'hamlit-rails'
 gem 'mongoid'
+gem 'sd_notify'
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
