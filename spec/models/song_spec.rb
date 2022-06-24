@@ -11,14 +11,14 @@ RSpec.describe Song, type: :model do
     it 'is invalid without required fields' do
       rec.song_name = ''
       rec.original = {}
-      rec.original_pos = nil
-      rec.pos = nil
+      rec.original_position = nil
+      rec.position = nil
 
       expect(rec).to_not be_valid
       expect(rec.errors[:song_name]).to include("can't be blank")
       expect(rec.errors[:original]).to include("can't be blank")
-      expect(rec.errors[:original_pos]).to include("can't be blank")
-      expect(rec.errors[:pos]).to include("can't be blank")
+      expect(rec.errors[:original_position]).to include("can't be blank")
+      expect(rec.errors[:position]).to include("can't be blank")
     end
 
     it 'is valid with full fields' do
@@ -30,8 +30,8 @@ RSpec.describe Song, type: :model do
 
       expect(rec.song_name).to eq('')
       expect(rec.original).to eq({})
-      expect(rec.original_pos).to eq(0)
-      expect(rec.pos).to eq(0)
+      expect(rec.original_position).to eq(0)
+      expect(rec.position).to eq(0)
     end
   end
 
@@ -47,19 +47,19 @@ RSpec.describe Song, type: :model do
       it 'saves song fields' do
         Song.import_songs(songs:, playlist_id: playlist.id)
 
-        rec = playlist.songs.order(original_pos: :asc).first
+        rec = playlist.songs.order(original_position: :asc).first
         data = songs[0]
         expect(rec.song_name).to eq(data['songName'])
         expect(rec.original).to eq(data)
-        expect(rec.original_pos).to eq(1)
-        expect(rec.pos).to eq(1)
+        expect(rec.original_position).to eq(1)
+        expect(rec.position).to eq(1)
 
-        rec = playlist.songs.order(original_pos: :asc).last
+        rec = playlist.songs.order(original_position: :asc).last
         data = songs[1]
         expect(rec.song_name).to eq(data['songName'])
         expect(rec.original).to eq(data)
-        expect(rec.original_pos).to eq(2)
-        expect(rec.pos).to eq(2)
+        expect(rec.original_position).to eq(2)
+        expect(rec.position).to eq(2)
       end
     end
   end

@@ -5,7 +5,7 @@ RSpec.describe '003s', type: :system do
     driven_by(:rack_test)
   end
 
-  it 'Users can sort songs by song names ascending or descending' do
+  it 'Users can download sorted playlist' do
     visit root_path
     click_link 'Upload playlist to start'
     attach_file 'upload_file', file_fixture('valid_playlist.json')

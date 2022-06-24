@@ -9,7 +9,7 @@ FactoryBot.define do
         hash: Faker::Number.hexadecimal(digits: 40)
       }
     end
-    sequence(:original_pos, 1)
-    sequence(:pos, 1)
+    sequence(:original_position, 1)
+    sequence(:position, 1)
   end
 end
