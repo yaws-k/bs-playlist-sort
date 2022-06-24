@@ -48,6 +48,7 @@ gem "bootsnap", require: false
 # Custom gems
 gem 'hamlit-rails'
 gem 'mongoid'
+gem 'mongoid_orderable'
 gem 'sd_notify'
 
 group :development, :test do

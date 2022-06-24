@@ -150,6 +150,8 @@ GEM
       activemodel (>= 5.1, < 7.1, != 7.0.0)
       mongo (>= 2.10.5, < 3.0.0)
       ruby2_keywords (~> 0.0.5)
+    mongoid_orderable (6.0.3)
+      mongoid (>= 7.0.0)
     msgpack (1.5.2)
     net-imap (0.2.3)
       digest
@@ -276,6 +278,7 @@ DEPENDENCIES
   importmap-rails
   jbuilder
   mongoid
+  mongoid_orderable
   puma (~> 5.0)
   rails (~> 7.0.3)
   redis (~> 4.0)

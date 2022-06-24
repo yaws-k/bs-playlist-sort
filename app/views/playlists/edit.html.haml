@@ -24,6 +24,8 @@
 
 %h2 #{@songs.size} Songs
 
+%p Use buttons to Reset (back to the original), Ascending, or Descending. You can also Drag & Drop songs to refine the order.
+
 .flex.flex-row.gap-4
   = form_with model: @playlist do |f|
     = hidden_field_tag 'type', 'reset'
@@ -39,6 +41,6 @@
 
   = link_to 'Download current list', playlist_path(@playlist), class: 'btn btn-primary', target: '_blank'
 
-%ol
+%ul{'data-controller': 'sortable'}
   - @songs.each do |s|
-    %li #{s.song_name}
+    %li{'data-sortable-update-url': song_path(s) } #{s.song_name}

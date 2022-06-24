@@ -16,7 +16,7 @@ class PlaylistsController < ApplicationController
       return
     end
 
-    @songs = @rec.songs.order(pos: :asc)
+    @songs = @rec.songs.order(position: :asc)
 
     send_data(@rec.export_json(songs: @songs), filename: @rec.filename)
   end
@@ -53,7 +53,7 @@ class PlaylistsController < ApplicationController
       return
     end
 
-    @songs = @playlist.songs.order(pos: :asc)
+    @songs = @playlist.songs.order(position: :asc)
   end
 
   def update
