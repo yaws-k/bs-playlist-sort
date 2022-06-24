@@ -76,13 +76,15 @@ class Playlist
     songs =
       case type
       when 'reset'
-        self.songs.order(original_pos: :asc)
+        self.songs.order(original_position: :asc)
       when 'asc'
         self.songs.order(song_name: :asc)
       when 'desc'
         self.songs.order(song_name: :desc)
       end
 
-    songs.each_with_index { |song, i| song.update(pos: i + 1) }
+    Song.with_session do
+      songs.each_with_index { |song, i| song.update(position: i + 1) }
+    end
   end
 end
