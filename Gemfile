@@ -46,7 +46,7 @@ gem "bootsnap", require: false
 # gem "sassc-rails"
 
 # Custom gems
-gem 'hamlit-rails'
+gem 'haml'
 gem 'mongoid'
 gem 'mongoid_orderable'
 gem 'sd_notify'
