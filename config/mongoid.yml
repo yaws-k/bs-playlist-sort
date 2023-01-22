@@ -9,7 +9,7 @@ development:
       # Otherwise define the parameters separately.
       # This defines the name of the default database that Mongoid can connect to.
       # (required).
-      database: bs_playlist_sort_development
+      database: <%= Rails.application.credentials.mongodb[:development][:dbname] %>
       # Provides the hosts the default client can connect to. Must be an array
       # of host:port pairs. (required)
       hosts:
@@ -170,7 +170,7 @@ development:
 test:
   clients:
     default:
-      database: bs_playlist_sort_test
+      database: <%= Rails.application.credentials.mongodb[:test][:dbname] %>
       hosts:
         - localhost:27017
       options:
@@ -185,7 +185,7 @@ test:
 production:
   clients:
     default:
-      database: bs_playlist_sort_production
+      database: <%= Rails.application.credentials.mongodb[:production][:dbname] %>
       hosts:
         - localhost:27017
       options:

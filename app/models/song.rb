@@ -34,16 +34,14 @@ class Song
     def import_songs(songs: [], playlist_id: nil)
       return false if songs.blank? || playlist_id.blank?
 
-      Song.with_session do
-        songs.each_with_index do |song, i|
-          Song.create(
-            playlist_id:,
-            song_name: song['songName'],
-            original: song,
-            original_position: i + 1,
-            position: i + 1
-          )
-        end
+      songs.each_with_index do |song, i|
+        Song.create(
+          playlist_id:,
+          song_name: song['songName'],
+          original: song,
+          original_position: i + 1,
+          position: i + 1
+        )
       end
 
       true
