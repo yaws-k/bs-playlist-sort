@@ -83,8 +83,6 @@ class Playlist
         self.songs.order(song_name: :desc)
       end
 
-    Song.with_session do
-      songs.each_with_index { |song, i| song.update(position: i + 1) }
-    end
+    songs.each_with_index { |song, i| song.update(position: i + 1) }
   end
 end
