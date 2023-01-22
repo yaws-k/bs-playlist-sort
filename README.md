@@ -1,35 +1,36 @@
 # Beat Saber Playlist Sort
 
-You can sort your songs in your playlists. BetterSongList MOD will enable you to sort songs ingame, but you don't have to sort them everytime you open a playlist if it is already sorted.
-Visit https://bsps.yaw.jp/ to use this.
+![GitHub Release Date](https://img.shields.io/github/release-date/yaws-k/bs-playlist-sort)
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/yaws-k/bs-playlist-sort)
+[![Run RSpec](https://github.com/yaws-k/bs-playlist-sort/actions/workflows/rspec.yml/badge.svg)](https://github.com/yaws-k/bs-playlist-sort/actions/workflows/rspec.yml)
+![GitHub](https://img.shields.io/github/license/yaws-k/bs-playlist-sort)
 
-# System information
-
-This is a practice projects to use Rails 7.
-
-## Versions
-
-* Ruby version: 3.1.x
-* Rails version: 7.0.x
+You can sort your songs in your playlists, and download updated ones.  
+Visit [https://bsps.yaw.jp/](https://bsps.yaw.jp/) to use this.
 
 ## Requirements
 
+* Ruby 3.2.x
+* Rails 7.0.x
 * MongoDB (>5.0)
-* Node.js (>16.15.x)
+* Node.js (>18.x)
 
 Unlike usual Rails system, this system uses MongoDB (through Mongoid) only. You don't need MariaDB(MySQL) or PostgreSQL.
 
 credentials.yml should have MongoDB credentials.
 
-```
+```yaml
 mongodb:
   development:
+    dbname: <development database name>
     user: <username>
     password: <password>
   test:
+    dbname: <test database name>
     user: <username>
     password: <password>
   production:
+    dbname: <production database name>
     user: <username>
     password: <password>
 ```
