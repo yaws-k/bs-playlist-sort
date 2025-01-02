@@ -5,8 +5,7 @@
 [![Run RSpec](https://github.com/yaws-k/bs-playlist-sort/actions/workflows/rspec.yml/badge.svg)](https://github.com/yaws-k/bs-playlist-sort/actions/workflows/rspec.yml)
 ![GitHub](https://img.shields.io/github/license/yaws-k/bs-playlist-sort)
 
-You can sort your songs in your playlists, and download updated ones.  
-Visit [https://bsps.yaw.jp/](https://bsps.yaw.jp/) to use this.
+You can sort your songs in your playlists, and download updated ones.
 
 ## Requirements
 
